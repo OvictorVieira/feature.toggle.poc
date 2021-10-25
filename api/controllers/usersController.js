@@ -1,11 +1,21 @@
 const users = require('../models/users')
 
-exports.list_all_users = (req, res) => {
-
-  return console.log('OI')
-};
-
 exports.create = (req, res) => {
+  try {
+    let createdUser = users.create(req.body)
 
-  return console.log('Criando Usuario')
-};
+    if(createdUser) return res.json(createdUser)
+  } catch (e) {
+    return res.sendStatus(400).json({
+      error: {
+        message: e.message
+      }
+    })
+  }
+
+  return res.sendStatus(500).json({
+    error: {
+      message: 'Não foi possível criar o usuário, tente novamente.'
+    }
+  })
+}
